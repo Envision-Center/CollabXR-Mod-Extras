@@ -1,0 +1,18 @@
+{
+  "name": "edu.envision.collabmodextras",
+  "version": "0.5.0",
+  "displayName": "CollabXR Mod Extras",
+  "description": "Add-ons and extra scripts for enabling further functionality in CollabXR mods.",
+  "unity": "2022.3",
+  "documentationUrl": "https://github.rcac.purdue.edu/EnvisionCenter/CollabXR-Mod-Extras",
+  "dependencies": {
+    "com.meta.xr.sdk.core": "72.0.0",
+    "com.unity.xr.management": "4.5.1"
+  },
+  "author": {
+    "name": "Envision Center",
+    "email": "envision@purdue.edu",
+    "url": "https://www.ecshowcase.com/"
+  },
+  "unityRelease": "15f1"
+}

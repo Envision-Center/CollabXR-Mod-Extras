@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 311743fa92e03b14c819fa60ec67d3fc, type: 3}
+  m_Name: CoordinateGizmoSettings
+  m_EditorClassIdentifier: 
+  originOffset: {x: 0, y: 0, z: 0}
+  displayMeasureLabels: 1
+  displayedUnitPreset: 3
+  displayedUnitString: m
+  lengthConversionRate: 1
+  lengthLabelPrecision: 1
+  lengthLabelInteger: 0
+  measureInterval: 0.5
+  measureLineWidth: 0.01
+  measureSpokeWidth: 0.05
+  measureLabelScale: 0.01
+  labelSettings:
+    edgeOffset: 0.1
+  XAxis:
+    color: {r: 1, g: 0, b: 0, a: 1}
+    showAxisPositive: 1
+    showAxisNegative: 0
+    lineLength: 1
+    lineWidth: 0.02
+    showLabel: 1
+    labelPositive: +X
+    labelNegative: -X
+    labelScale: 0.02
+    labelProportion: 0.625
+  YAxis:
+    color: {r: 0, g: 1, b: 0, a: 1}
+    showAxisPositive: 1
+    showAxisNegative: 0
+    lineLength: 1
+    lineWidth: 0.02
+    showLabel: 1
+    labelPositive: +Y
+    labelNegative: -Y
+    labelScale: 0.02
+    labelProportion: 0.625
+  ZAxis:
+    color: {r: 0, g: 0, b: 1, a: 1}
+    showAxisPositive: 1
+    showAxisNegative: 0
+    lineLength: 1
+    lineWidth: 0.02
+    showLabel: 1
+    labelPositive: +Z
+    labelNegative: -Z
+    labelScale: 0.02
+    labelProportion: 0.625
+  lineRenderMaterial: {fileID: 2100000, guid: 7d323b5236d5e674f9a6a21c16600b04, type: 2}
