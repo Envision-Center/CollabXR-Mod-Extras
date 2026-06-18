@@ -19,7 +19,13 @@ public class TogglePreview : EditorWindow
     {
         GUILayout.Space(5);
         EditorGUILayout.LabelField("Toggle Controller", EditorStyles.boldLabel);
-        toggleController = (ToggleController) EditorGUILayout.ObjectField("Toggle Controller", toggleController, typeof(ToggleController), true);
+        toggleController = (ToggleController)
+            EditorGUILayout.ObjectField(
+                "Toggle Controller",
+                toggleController,
+                typeof(ToggleController),
+                true
+            );
 
         if (toggleController == null)
         {
@@ -46,12 +52,12 @@ public class TogglePreview : EditorWindow
                 for (int i = 0; i < children.Count; i++)
                 {
                     var t = children[i];
-                    if (t == null || t.obj == null) continue;
+                    if (t == null || t.obj == null)
+                        continue;
 
                     bool current = t.obj.activeSelf;
 
                     EditorGUILayout.BeginHorizontal();
-
 
                     GUI.backgroundColor = current ? Color.green : new Color(0.5f, 0.5f, 0.5f);
                     if (GUILayout.Button(t.obj.name, GUILayout.Height(22)))
@@ -64,7 +70,10 @@ public class TogglePreview : EditorWindow
                     if (part)
                     {
                         part?.CalculateFrameCount();
-                        EditorGUILayout.LabelField($"{part?.GetFrameCount()} frames", GUILayout.Width(80));
+                        EditorGUILayout.LabelField(
+                            $"{part?.FrameCount} frames",
+                            GUILayout.Width(80)
+                        );
                     }
                     EditorGUILayout.EndHorizontal();
                 }
@@ -89,8 +98,6 @@ public class TogglePreview : EditorWindow
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.EndHorizontal();
 
-        
-
         if (GUI.changed)
         {
             EditorUtility.SetDirty(toggleController);
@@ -98,16 +105,17 @@ public class TogglePreview : EditorWindow
         }
     }
 
-
     // Get next or previous
     private int GetActiveIndex(ToggleController toggleController, int direction)
     {
-        if (toggleController == null || toggleController.toggleableChildren.Count == 0) return 0;
+        if (toggleController == null || toggleController.toggleableChildren.Count == 0)
+            return 0;
 
         var list = toggleController.toggleableChildren;
         int currentIndex = -1;
         for (int i = 0; i < list.Count; i++)
-            if (list[i].obj.activeSelf) currentIndex = i;
+            if (list[i].obj.activeSelf)
+                currentIndex = i;
 
         if (direction == 1)
             currentIndex = (currentIndex + direction) % list.Count;
@@ -117,10 +125,10 @@ public class TogglePreview : EditorWindow
         return currentIndex;
     }
 
-
     public void UpdateFrameDisplay()
     {
-        if (!toggleController) return;
+        if (!toggleController)
+            return;
 
         // Show visible datasets
         if (toggleController && toggleController.toggleableChildren.Count > 0)
