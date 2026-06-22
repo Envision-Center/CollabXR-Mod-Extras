@@ -1,13 +1,15 @@
-﻿using UnityEditor;
+﻿using System;
+using UnityEditor;
 using UnityEngine;
 using CollabXR;
 using CollabXR.ModExtras;
 
+[Obsolete("Deprecated; Use PlaybackDirector system instead.")]
 public class CyclePreview : EditorWindow
 {
     private CycleMaster cycleMaster;
 
-    [MenuItem("CollabXR/Mod Extras/Cycle Preview")]
+    //[MenuItem("CollabXR/Mod Extras/Cycle Preview")]
     public static void ShowWindow()
     {
         GetWindow<CyclePreview>("Cycle Preview");
@@ -53,7 +55,7 @@ public class CyclePreview : EditorWindow
         }
         EditorGUILayout.EndHorizontal();
 
-        
+
 
         if (GUI.changed)
         {
