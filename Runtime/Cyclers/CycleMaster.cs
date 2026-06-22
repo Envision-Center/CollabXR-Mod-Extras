@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace CollabXR.ModExtras
 {
-    [System.Obsolete("Deprecated; all systems refactored into PlaybackDirector.")]
     public class CycleMaster : MonoBehaviour
     {
         public List<CyclePart> objectCyclers;
@@ -19,8 +18,7 @@ namespace CollabXR.ModExtras
 
         public void UpdateMaster()
         {
-            if (paused)
-                return;
+            if (paused) return;
             CalculatePercent();
         }
 
@@ -28,7 +26,7 @@ namespace CollabXR.ModExtras
         {
             foreach (CyclePart cycler in objectCyclers)
             {
-                cycler.SetPercent(lastPercent);
+                cycler.SetFramePercentage(lastPercent);
             }
         }
 
