@@ -1,26 +1,24 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CollabXR.ModExtras
 {
-    [System.Obsolete("Deprecated; all systems refactored into PlaybackDirector.")]
     [ExecuteAlways]
     public class CycleMasterTicker : MonoBehaviour
     {
-        [SerializeField]
-        private CycleMaster target;
+        [SerializeField] private CycleMaster target;
 
-        [Min(0.01f)]
-        public float interval = 0.25f;
+        [Min(0.01f)] public float interval = 0.25f;
 
-        [Range(0f, 1f)]
-        public float step = 0.05f;
+        [Range(0f, 1f)] public float step = 0.05f;
 
-        [Range(0f, 1f)]
-        public float percent = 0f;
+        [Range(0f, 1f)] public float percent = 0f;
 
-        [SerializeField]
-        private ToggleController toggleController; // Attached or some as target probably
+ 
+        [SerializeField] private ToggleController toggleController; // Attached or some as target probably
+
+        
 
         private Coroutine loop;
         private int activeIndex = 0;
@@ -31,14 +29,14 @@ namespace CollabXR.ModExtras
                 target = GetComponent<CycleMaster>() ?? GetComponentInChildren<CycleMaster>();
 
             if (!toggleController)
-                toggleController =
-                    GetComponent<ToggleController>() ?? GetComponentInChildren<ToggleController>();
+                toggleController = GetComponent<ToggleController>() ?? GetComponentInChildren<ToggleController>();
         }
 
         void OnEnable()
         {
             if (Application.isPlaying)
                 StartTicking();
+
         }
 
         void OnDisable()
@@ -75,24 +73,22 @@ namespace CollabXR.ModExtras
 
         void Tick()
         {
-            if (!target)
-                return;
+            if (!target) return;
 
             if (step > 0f)
             {
                 percent += step;
-                if (percent > 1f)
-                    percent -= 1f;
+                if (percent > 1f) percent -= 1f;
             }
 
             target.SetPercent(percent);
             UpdateFrameDisplay();
         }
 
+        
         public void UpdateFrameDisplay()
         {
-            if (!target)
-                return;
+            if (!target) return;
 
             // Show visible datasets
             if (toggleController && toggleController.toggleableChildren.Count > 0)
@@ -100,7 +96,7 @@ namespace CollabXR.ModExtras
                 for (int i = 0; i < toggleController.toggleableChildren.Count; i++)
                 {
                     var t = toggleController.toggleableChildren[i];
-                    bool shouldBeOn = (i == activeIndex);
+                    bool shouldBeOn = (i == activeIndex);      
                     t.Toggle(shouldBeOn);
                 }
             }
@@ -109,9 +105,11 @@ namespace CollabXR.ModExtras
             foreach (var cycler in target.objectCyclers)
             {
                 if (cycler is ObjectCyclePart part && part.gameObject.activeSelf)
-                    part.SetPercent(percent);
+                    part.SetFramePercentage(percent);
             }
         }
+
+       
 
         public void SetActiveIndex(int index)
         {
@@ -125,5 +123,7 @@ namespace CollabXR.ModExtras
             target.SetPercent(percent);
             UpdateFrameDisplay();
         }
+
+
     }
 }
