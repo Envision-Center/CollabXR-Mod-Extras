@@ -1,9 +1,9 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace CollabXR.ModExtras
 {
+	[System.Obsolete("Deprecated; all systems refactored into PlaybackDirector.")]
     [ExecuteAlways]
     public class CycleMasterTicker : MonoBehaviour
     {
@@ -15,10 +15,10 @@ namespace CollabXR.ModExtras
 
         [Range(0f, 1f)] public float percent = 0f;
 
- 
+
         [SerializeField] private ToggleController toggleController; // Attached or some as target probably
 
-        
+
 
         private Coroutine loop;
         private int activeIndex = 0;
@@ -85,7 +85,7 @@ namespace CollabXR.ModExtras
             UpdateFrameDisplay();
         }
 
-        
+
         public void UpdateFrameDisplay()
         {
             if (!target) return;
@@ -96,7 +96,7 @@ namespace CollabXR.ModExtras
                 for (int i = 0; i < toggleController.toggleableChildren.Count; i++)
                 {
                     var t = toggleController.toggleableChildren[i];
-                    bool shouldBeOn = (i == activeIndex);      
+                    bool shouldBeOn = (i == activeIndex);
                     t.Toggle(shouldBeOn);
                 }
             }
@@ -105,11 +105,11 @@ namespace CollabXR.ModExtras
             foreach (var cycler in target.objectCyclers)
             {
                 if (cycler is ObjectCyclePart part && part.gameObject.activeSelf)
-                    part.SetFramePercentage(percent);
+                    part.SetPercent(percent);
             }
         }
 
-       
+
 
         public void SetActiveIndex(int index)
         {
