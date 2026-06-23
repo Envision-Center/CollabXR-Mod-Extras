@@ -267,7 +267,7 @@ namespace CollabXR.ModExtras
         {
             foreach (var effect in _effects)
             {
-                if (effect is MonoBehaviour mb && mb != null && mb.gameObject.activeInHierarchy)
+                if (effect is MonoBehaviour mb && mb != null)
                 {
                     // ISubFrameEffect always gets raw continuous percent instead of quantized
                     float effectPercent = (syncMode == PlaybackSyncMode.ScalePercent || effect is ISubFrameEffect)
