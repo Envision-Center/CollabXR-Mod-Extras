@@ -25,19 +25,19 @@ namespace CollabXR.ModExtras
 
         [Header("Playback Settings")]
         [Tooltip("Duration in seconds for a full playback cycle. Affects speed of playback and is used as reference for percent-based synchronization.")]
-        [SerializeField] private float duration = 10f;
+        public float duration = 10f;
         [Tooltip("Whether playback should loop back to start when reaching the end.")]
-        [SerializeField] private bool loop = true;
+        public bool loop = true;
         [Tooltip("If true, playback begins automatically when the mod is spawned.")]
-        [SerializeField] private bool playOnAwake = true;
+        public bool playOnAwake = true;
         [Tooltip("Assign this to a PlaybackViewModel for the effect. If left empty, will search for the component on the GameObject.")]
-        [SerializeField] private PlaybackViewModel viewModel;
+        public PlaybackViewModel viewModel;
 
         [Header("Playback Effects")]
         [Tooltip("Optional list of effect components to drive. If left empty, will auto-discover all IPlaybackEffect components in children.")]
-        [SerializeField] private List<MonoBehaviour> effectComponents = new List<MonoBehaviour>();
+        public List<MonoBehaviour> effectComponents = new List<MonoBehaviour>();
         [Tooltip("Scale Percent: All effects driven at the same normalized percent [0,1]. Sync By Frame: Effects synced by frame; shorter effects stop at their last frame while longer ones continue")]
-        [SerializeField] private PlaybackSyncMode syncMode = PlaybackSyncMode.ScalePercent;
+        public PlaybackSyncMode syncMode = PlaybackSyncMode.ScalePercent;
 
         #endregion
 
@@ -55,14 +55,23 @@ namespace CollabXR.ModExtras
 
         #region IPlaybackDirector Properties
 
+        /// <summary>Returns the current playback percent. Getter for CollabXR internals.</summary>
         public float CurrentPercent => _currentPercent;
+        /// <summary>Returns whether an animation is playing. Getter for CollabXR internals.</summary>
         public bool IsPlaying => _isPlaying;
+        /// <summary>Returns the current playback speed. Getter for CollabXR internals.</summary>
         public float Speed => _speed;
+        /// <summary>Returns the current animation duration. Getter for CollabXR internals.</summary>
         public float Duration => duration;
+        /// <summary>Returns whether to play animations on awake. Getter for CollabXR internals.</summary>
         public bool PlayOnAwake => playOnAwake;
+        /// <summary>Lists the playback components for animation. Getter for CollabXR internals.</summary>
         public List<IPlaybackComponent> Components => _components;
+        /// <summary>Returns the current playback sync mode. Getter for CollabXR internals.</summary>
         public PlaybackSyncMode SyncMode => syncMode;
+        /// <summary>Returns the current animation's maximum frame count. Getter for CollabXR internals.</summary>
         public int MaxFrameCount => _maxFrameCount;
+        /// <summary>Returns the current animation frame. Getter for CollabXR internals.</summary>
         public int CurrentFrame => Mathf.FloorToInt(_currentPercent * _maxFrameCount);
 
         #endregion
@@ -258,7 +267,7 @@ namespace CollabXR.ModExtras
         {
             foreach (var effect in _effects)
             {
-                if (effect is MonoBehaviour mb && mb != null && mb.gameObject.activeInHierarchy)
+                if (effect is MonoBehaviour mb && mb != null)
                 {
                     // ISubFrameEffect always gets raw continuous percent instead of quantized
                     float effectPercent = (syncMode == PlaybackSyncMode.ScalePercent || effect is ISubFrameEffect)

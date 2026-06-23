@@ -15,14 +15,15 @@ namespace CollabXR.ModExtras
 
         [Header("Object Cycle Settings")]
         [Tooltip("All objects to cycle through (enabling the active one and disabling all others). Note that this list is NOT used at runtime, as a copy is made.")]
-        [SerializeField] private List<GameObject> objects;
+        /// <summary>Optiontally preset a list of objects to cycle through. Only used if autoPopulateAtRuntime is false.</summary>
+        public List<GameObject> objects;
         [Header("Runtime Options")]
         [FormerlySerializedAs("autoPopulate")]
         [Tooltip("If true, at runtime, the objects list will automatically be overwritten with all child GameObjects. If false, only the manually assigned objects will be used.")]
-        [SerializeField] private bool autoPopulateAtRuntime = true;
+        public bool autoPopulateAtRuntime = true;
         [FormerlySerializedAs("sortByName")]
         [Tooltip("If true, the objects will be sorted alphabetically by name before cycling. If false, will use hierarchy order. Only applies if Auto Populate is enabled.")]
-        [SerializeField] private bool sortByNameWhenPopulating = true;
+        public bool sortByNameWhenPopulating = false;
 
         public override int FrameCount => objectsToCycle?.Count ?? 0;
 
