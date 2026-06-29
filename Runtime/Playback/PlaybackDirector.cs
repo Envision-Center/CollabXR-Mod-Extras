@@ -48,6 +48,7 @@ namespace CollabXR.ModExtras
         private bool _isPlaying = false;
         private float _speed = 1f;
         private bool _locallyDriven = true;
+        private bool _networkDriven = false;
         private List<IPlaybackComponent> _components = new List<IPlaybackComponent>();
         private int _maxFrameCount = 0;
 
@@ -86,7 +87,7 @@ namespace CollabXR.ModExtras
 
         private void Update()
         {
-            if (_isPlaying)
+            if (_isPlaying && !_networkDriven)
             {
                 Tick(Time.deltaTime);
             }
@@ -191,6 +192,23 @@ namespace CollabXR.ModExtras
         public void SetLocallyDriven(bool driven)
         {
             _locallyDriven = driven;
+        }
+
+        public void SetNetworkDriven(bool driven)
+        {
+            _networkDriven = driven;
+        }
+
+        public void StartScrubbing()
+        {
+            foreach (var effect in _effects)
+                if (effect is IScrubbableEffect s) s.OnScrubStart();
+        }
+
+        public void StopScrubbing(bool resumePlay)
+        {
+            foreach (var effect in _effects)
+                if (effect is IScrubbableEffect s) s.OnScrubEnd(resumePlay);
         }
 
         public void SetSyncMode(PlaybackSyncMode mode)
