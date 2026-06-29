@@ -64,7 +64,7 @@ public class TogglePreview : EditorWindow
                     if (part)
                     {
                         part?.CalculateFrameCount();
-                        EditorGUILayout.LabelField($"{part?.GetFrameCount()} frames", GUILayout.Width(80));
+                        EditorGUILayout.LabelField($"{part?.FrameCount} frames", GUILayout.Width(80));
                     }
                     EditorGUILayout.EndHorizontal();
                 }
@@ -89,7 +89,7 @@ public class TogglePreview : EditorWindow
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.EndHorizontal();
 
-        
+
 
         if (GUI.changed)
         {
