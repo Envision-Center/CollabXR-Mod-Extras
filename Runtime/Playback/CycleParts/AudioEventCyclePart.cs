@@ -10,7 +10,7 @@ namespace CollabXR.ModExtras
      * Unlike AudioCyclePart (continuous), this fires discrete audio events at frame boundaries,
      * similar to animation events. Automatically detects frame crossings and triggers events.
      * </summary> */
-    public class AudioEventCyclePart : CyclePart, IFrameContextAware, ISubFrameEffect
+    public class AudioEventCyclePart : CyclePart, IFrameContextAware, ISubFrameEffect, IScrubbableEffect
     {
 	    [Header("Audio Event Settings")]
 	    [Tooltip("AudioSource to play one-shot clips from. If null, events will not be triggered.")]
@@ -21,6 +21,7 @@ namespace CollabXR.ModExtras
         private float _lastPercent = -1f;
         private int _maxFrameCount = 0;
         private bool _isPlaying = false;
+        private bool _isScrubbing = false;
 
         [System.Serializable]
         public struct AudioFrameEvent
@@ -58,7 +59,7 @@ namespace CollabXR.ModExtras
             // On first call treat last as current so no spurious events fire at spawn
             int prevFrame = _lastPercent >= 0f ? Mathf.FloorToInt(_lastPercent * _maxFrameCount) : currentFrame;
 
-            if (_isPlaying)
+            if (_isPlaying && !_isScrubbing)
                 CheckFrameEventCrossings(prevFrame, currentFrame);
 
             _lastPercent = normalizedPercent;
@@ -94,6 +95,18 @@ namespace CollabXR.ModExtras
         public void SetFrameContext(int maxFrameCount)
         {
 	        _maxFrameCount = maxFrameCount;
+        }
+
+        public void OnScrubStart()
+        {
+            _isScrubbing = true;
+        }
+
+        public void OnScrubEnd(bool resumePlay)
+        {
+            _isScrubbing = false;
+            // _lastPercent is already at the scrubbed position from continuous SetPercent calls,
+            // so the next tick will only detect crossings from the final scrub position onward.
         }
     }
 }

@@ -7,13 +7,15 @@ namespace CollabXR.ModExtras
      * Uses a seek deadband to avoid re-seeking on every frame (which causes glitches).
      * Continuously follows the playback position regardless of sync mode.
      * </summary> */
-    public class AudioCyclePart : CyclePart
+    public class AudioCyclePart : CyclePart, IScrubbableEffect
     {
 	    [Header("Audio Cycle Settings")]
 	    [Tooltip("The audio source that this part will play.")]
         [SerializeField] private AudioSource source;
 	    [Tooltip("Can leave at default; Minimum time difference (in seconds) required to seek the audio source when changing playback position. This prevents glitches caused by re-seeking on every frame when the playback position changes slightly.")]
         [SerializeField] private float seekDeadbandSeconds = 0.08f;
+
+        private bool _wasPlayingBeforeScrub;
 
         public override int FrameCount => 0;  // Audio is continuous, not frame-based
 
@@ -56,6 +58,22 @@ namespace CollabXR.ModExtras
                 source.Stop();
                 source.time = 0f;
             }
+        }
+
+        public void OnScrubStart()
+        {
+            if (source != null && source.isPlaying)
+            {
+                _wasPlayingBeforeScrub = true;
+                source.Pause();
+            }
+        }
+
+        public void OnScrubEnd(bool resumePlay)
+        {
+            if (_wasPlayingBeforeScrub && resumePlay && source != null)
+                source.UnPause();
+            _wasPlayingBeforeScrub = false;
         }
     }
 }
