@@ -25,7 +25,6 @@ namespace CollabXR.ModExtras.Editor
 		{
 			_director = director;
 			_viewModel = null;
-
 			_directorGuid = director != null ? director.EditorGuid : string.Empty;
 		}
 
