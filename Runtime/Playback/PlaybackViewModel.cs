@@ -31,6 +31,7 @@ namespace CollabXR.ModExtras
         public Action<float> OnSeekRequested = delegate { };
         public Action<float> OnSpeedChangeRequested = delegate { };
         public Action<int, int> OnComponentChangeRequested = delegate { };
+        public Action<bool> OnScrubbingChangeRequested = delegate { };
 
         public void RequestPlay() => OnPlayRequested.Invoke();
         public void RequestPause() => OnPauseRequested.Invoke();
@@ -38,6 +39,7 @@ namespace CollabXR.ModExtras
         public void RequestSeek(float normalizedPercent) => OnSeekRequested.Invoke(normalizedPercent);
         public void RequestSetSpeed(float multiplier) => OnSpeedChangeRequested.Invoke(multiplier);
         public void RequestSetComponentSet(int componentId, int index) =>  OnComponentChangeRequested.Invoke(componentId, index);
+        public void RequestSetScrubbing(bool isScrubbing) => OnScrubbingChangeRequested.Invoke(isScrubbing);
 
         #endregion
 
