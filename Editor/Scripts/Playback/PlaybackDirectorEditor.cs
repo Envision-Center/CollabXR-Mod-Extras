@@ -7,13 +7,12 @@ namespace CollabXR.ModExtras.Editor
 	public class PlaybackDirectorEditor : EditorWindow
 	{
 		[SerializeField]
-		private PlaybackDirector _director = null;
+		private PlaybackDirector _director;
 
 		[SerializeField]
-		private PlaybackViewModel _viewModel = null;
+		private string _directorGuid;
 
-		[SerializeField]
-		private string _directorGlobalId;
+		private PlaybackViewModel _viewModel;
 		private Vector2 _scrollPos;
 
 		[MenuItem("CollabXR/Mod Extras/Playback Preview")]
@@ -22,44 +21,45 @@ namespace CollabXR.ModExtras.Editor
 			GetWindow<PlaybackDirectorEditor>("Playback Preview");
 		}
 
-		private void OnEnable()
+		private void SetDirector(PlaybackDirector director)
 		{
-			TryRestoreDirector();
+			_director = director;
+			_viewModel = null;
+
+			_directorGuid = director != null ? director.EditorGuid : string.Empty;
 		}
 
-		private void TryRestoreDirector()
+		private void RestoreDirector()
 		{
-			if (_director != null || string.IsNullOrEmpty(_directorGlobalId))
+			if (_director != null)
 				return;
 
-			if (GlobalObjectId.TryParse(_directorGlobalId, out GlobalObjectId gid))
+			if (string.IsNullOrEmpty(_directorGuid))
+				return;
+
+			foreach (var director in FindObjectsByType<PlaybackDirector>(FindObjectsInactive.Include, FindObjectsSortMode.None))
 			{
-				if (GlobalObjectId.GlobalObjectIdentifierToObjectSlow(gid) is PlaybackDirector restored)
+				if (director.EditorGuid == _directorGuid)
 				{
-					_director = restored;
-					_viewModel = null;
+					_director = director;
+					return;
 				}
 			}
 		}
 
 		private void OnGUI()
 		{
+			RestoreDirector();
+
 			GUILayout.Space(5);
 			EditorGUILayout.LabelField("Playback Director", EditorStyles.boldLabel);
 
 			PlaybackDirector newDirector = (PlaybackDirector)EditorGUILayout.ObjectField("Director", _director, typeof(PlaybackDirector), true);
 
-			// If director changed, reset viewmodel reference so we find the new one
 			if (newDirector != _director)
 			{
-				_director = newDirector;
-				_viewModel = null;
-				_directorGlobalId = _director != null ? GlobalObjectId.GetGlobalObjectIdSlow(_director).ToString() : null;
+				SetDirector(newDirector);
 			}
-
-			// Field can go fake-null across a domain reload
-			if (_director == null)
-				TryRestoreDirector();
 
 			if (_director == null)
 			{
@@ -67,12 +67,9 @@ namespace CollabXR.ModExtras.Editor
 				return;
 			}
 
-			// Try to find ViewModel from the director or its children
-			if (_viewModel == null)
+			if (_director != null && (_viewModel == null || _viewModel.gameObject != _director.gameObject))
 			{
-				_viewModel = _director.GetComponent<PlaybackViewModel>();
-				if (_viewModel == null)
-					_viewModel = _director.GetComponentInChildren<PlaybackViewModel>();
+				_viewModel = _director.GetComponent<PlaybackViewModel>() ?? _director.GetComponentInChildren<PlaybackViewModel>();
 			}
 
 			if (!EditorApplication.isPlaying)
@@ -229,12 +226,31 @@ namespace CollabXR.ModExtras.Editor
 
 		private void Update()
 		{
-			// Must repaint even while _director is null/fake-null, otherwise OnGUI stops
-			// running (Unity only redraws EditorWindows on demand) and the panel visibly
-			// freezes on stale state until manually closed and reopened.
 			if (EditorApplication.isPlaying)
 			{
 				Repaint();
+			}
+		}
+
+		private void OnEnable()
+		{
+			EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
+		}
+
+		private void OnDisable()
+		{
+			EditorApplication.playModeStateChanged -= OnPlayModeStateChanged;
+		}
+
+		private void OnPlayModeStateChanged(PlayModeStateChange state)
+		{
+			switch (state)
+			{
+				case PlayModeStateChange.EnteredPlayMode:
+				case PlayModeStateChange.EnteredEditMode:
+					_director = null;
+					_viewModel = null;
+					break;
 			}
 		}
 	}
