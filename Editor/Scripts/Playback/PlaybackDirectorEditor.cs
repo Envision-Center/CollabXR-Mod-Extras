@@ -7,10 +7,10 @@ namespace CollabXR.ModExtras.Editor
 	public class PlaybackDirectorEditor : EditorWindow
 	{
 		[SerializeField]
-		private PlaybackDirector _director;
+		private PlaybackDirector _director = null;
 
 		[SerializeField]
-		private PlaybackViewModel _viewModel;
+		private PlaybackViewModel _viewModel = null;
 
 		[SerializeField]
 		private string _directorGlobalId;
