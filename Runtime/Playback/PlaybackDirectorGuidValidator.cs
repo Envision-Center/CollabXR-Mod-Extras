@@ -16,7 +16,6 @@ namespace CollabXR.ModExtras
 		private static void ValidateGuids()
 		{
 			var directors = Object.FindObjectsByType<PlaybackDirector>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-
 			var used = new HashSet<string>();
 
 			foreach (var director in directors)

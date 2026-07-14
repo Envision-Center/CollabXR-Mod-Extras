@@ -111,7 +111,9 @@ namespace CollabXR.ModExtras
 		private void EnsureEditorGuid()
 		{
 			if (Application.isPlaying)
+			{
 				return;
+			}
 
 			if (string.IsNullOrEmpty(_editorGuid))
 			{
