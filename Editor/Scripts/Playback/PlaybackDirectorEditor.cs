@@ -6,8 +6,8 @@ namespace CollabXR.ModExtras.Editor
 {
     public class PlaybackDirectorEditor : EditorWindow
     {
-        private PlaybackDirector _director;
-        private PlaybackViewModel _viewModel;
+        [SerializeField] private PlaybackDirector _director;
+        [SerializeField] private PlaybackViewModel _viewModel;
         private Vector2 _scrollPos;
 
         [MenuItem("CollabXR/Mod Extras/Playback Preview")]
