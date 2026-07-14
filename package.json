@@ -1,6 +1,6 @@
 {
 	"name": "edu.envision.collabmodextras",
-	"version": "0.6.0",
+	"version": "0.6.1",
 	"displayName": "CollabXR Mod Extras",
 	"description": "Add-ons and extra scripts for enabling further functionality in CollabXR mods.",
 	"unity": "2022.3",
