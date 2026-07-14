@@ -1,4 +1,3 @@
-#if UNITY_EDITOR
 namespace CollabXR.ModExtras
 {
 	using System.Collections.Generic;
@@ -34,4 +33,3 @@ namespace CollabXR.ModExtras
 		}
 	}
 }
-#endif
