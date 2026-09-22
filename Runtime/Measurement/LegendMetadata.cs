@@ -73,7 +73,7 @@ namespace CollabXR.ModExtras.Measurement
 
 			[Header("Toggle Controller Integration")]
 			[Tooltip(
-				"Corresponding index of this variable on the given Toggle Controller, if any."
+				"Corresponding index of this variable on the given Toggle Controller, if any. Be sure to set your Point of Reference on the Socket Annotation to the GameObject with the Toggle Controller component."
 			)]
 			public int toggleIndex;
 		}
