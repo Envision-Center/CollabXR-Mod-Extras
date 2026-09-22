@@ -23,6 +23,13 @@ namespace CollabXR.ModExtras.Measurement
         [Serializable]
         public struct Variable
         {
+#if UNITY_EDITOR
+            [Tooltip(
+                "Optional ID of the variable. Only used within the editor--useful for tooling."
+            )]
+            public string id;
+#endif
+
             [Tooltip("The displayed name of the variable.")]
             public string name;
 
@@ -42,6 +49,11 @@ namespace CollabXR.ModExtras.Measurement
                 "A single color or multiple colors associated with the variable. Will be drawn in a gradient associated with the minimum value in the range to the maximum."
             )]
             public List<Color> colors;
+
+            [Tooltip(
+                "Optional list of values to display for each corresponding color. Using thresholds will disable the total range display, because thresholds are more granular."
+            )]
+            public List<float> thresholds;
 
             [Tooltip("Associated unit of measure to display with values for this variable.")]
             public string unit;
@@ -97,7 +109,7 @@ namespace CollabXR.ModExtras.Measurement
             Debug.Log("Got result " + result);
 
             variables.Clear();
-            variables = new List<Variable>();
+            var newVariables = new List<Variable>();
             foreach (Variable variable in result.variables)
             {
                 Debug.Log("Created variable " + variable.name);
@@ -123,9 +135,10 @@ namespace CollabXR.ModExtras.Measurement
                 Variable newVar = variable;
                 newVar.colors = colors;
                 newVar.colorsHex = null;
-                variables.Add(newVar);
+                newVariables.Add(newVar);
             }
 
+            variables = newVariables;
             Debug.Log(string.Format("Created {0} variables", variables.Count));
         }
     }
