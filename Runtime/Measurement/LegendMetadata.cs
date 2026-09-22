@@ -30,21 +30,37 @@ namespace CollabXR.ModExtras.Measurement
             public string id;
 #endif
 
+			[Header("Labels")]
             [Tooltip("The displayed name of the variable.")]
             public string name;
 
-            [Tooltip(
-                "Corresponding index of this variable on the given Toggle Controller, if any."
-            )]
-            public int toggleIndex;
+			[Tooltip("Whether to display the name of variable.")]
+			public bool displayLabel;
 
-            /// <summary>
-            /// Hexadecimal version of the colors, specifically for JSON importing.
-            /// </summary>
-            [HideInInspector]
+			[Header("Value Ranges")]
+			[Tooltip("Whether to show unit and value information with the variable.")]
+			public bool displayValues;
+
+			[Tooltip("Associated unit of measure to display with values for this variable.")]
+			public string unit;
+
+			[Tooltip("How to format range and threshold numbers. Optionally specify in a decimal format, i.e. '0.00' or leave blank for automatic.")]
+			public string precision;
+
+			[Header("Values")]
+			[Tooltip("The minimum bound of the variable's range.")]
+			public float rangeMinimum;
+
+			[Tooltip("The minimum bound of the variable's range.")]
+			public float rangeMaximum;
+
+			/// <summary>
+			/// Hexadecimal version of the colors, specifically for JSON importing.
+			/// </summary>
+			[HideInInspector]
             public string[] colorsHex;
 
-            [Header("Display")]
+            [Header("Thresholds")]
             [Tooltip(
                 "A single color or multiple colors associated with the variable. Will be drawn in a gradient associated with the minimum value in the range to the maximum."
             )]
@@ -55,22 +71,12 @@ namespace CollabXR.ModExtras.Measurement
             )]
             public List<float> thresholds;
 
-            [Tooltip("Associated unit of measure to display with values for this variable.")]
-            public string unit;
-
-            [Tooltip("Whether to display the name of variable.")]
-            public bool displayLabel;
-
-            [Tooltip("Whether to show unity and value information with the variable.")]
-            public bool displayValues;
-
-            [Header("Values")]
-            [Tooltip("The minimum bound of the variable's range.")]
-            public float rangeMinimum;
-
-            [Tooltip("The minimum bound of the variable's range.")]
-            public float rangeMaximum;
-        }
+			[Header("Toggle Controller Integration")]
+			[Tooltip(
+				"Corresponding index of this variable on the given Toggle Controller, if any."
+			)]
+			public int toggleIndex;
+		}
 
         /// <summary>
         /// Used for JSON deserialization.
