@@ -23,42 +23,60 @@ namespace CollabXR.ModExtras.Measurement
         [Serializable]
         public struct Variable
         {
+#if UNITY_EDITOR
+            [Tooltip(
+                "Optional ID of the variable. Only used within the editor--useful for tooling."
+            )]
+            public string id;
+#endif
+
+			[Header("Labels")]
             [Tooltip("The displayed name of the variable.")]
             public string name;
 
-            [Tooltip(
-                "Corresponding index of this variable on the given Toggle Controller, if any."
-            )]
-            public int toggleIndex;
+			[Tooltip("Whether to display the name of variable.")]
+			public bool displayLabel;
 
-            /// <summary>
-            /// Hexadecimal version of the colors, specifically for JSON importing.
-            /// </summary>
-            [HideInInspector]
+			[Header("Value Ranges")]
+			[Tooltip("Whether to show unit and value information with the variable.")]
+			public bool displayValues;
+
+			[Tooltip("Associated unit of measure to display with values for this variable.")]
+			public string unit;
+
+			[Tooltip("How to format range and threshold numbers. Optionally specify in a decimal format, i.e. '0.00' or leave blank for automatic.")]
+			public string precision;
+
+			[Header("Values")]
+			[Tooltip("The minimum bound of the variable's range.")]
+			public float rangeMinimum;
+
+			[Tooltip("The minimum bound of the variable's range.")]
+			public float rangeMaximum;
+
+			/// <summary>
+			/// Hexadecimal version of the colors, specifically for JSON importing.
+			/// </summary>
+			[HideInInspector]
             public string[] colorsHex;
 
-            [Header("Display")]
+            [Header("Thresholds")]
             [Tooltip(
                 "A single color or multiple colors associated with the variable. Will be drawn in a gradient associated with the minimum value in the range to the maximum."
             )]
             public List<Color> colors;
 
-            [Tooltip("Associated unit of measure to display with values for this variable.")]
-            public string unit;
+            [Tooltip(
+                "Optional list of values to display for each corresponding color. Using thresholds will disable the total range display, because thresholds are more granular."
+            )]
+            public List<float> thresholds;
 
-            [Tooltip("Whether to display the name of variable.")]
-            public bool displayLabel;
-
-            [Tooltip("Whether to show unity and value information with the variable.")]
-            public bool displayValues;
-
-            [Header("Values")]
-            [Tooltip("The minimum bound of the variable's range.")]
-            public float rangeMinimum;
-
-            [Tooltip("The minimum bound of the variable's range.")]
-            public float rangeMaximum;
-        }
+			[Header("Toggle Controller Integration")]
+			[Tooltip(
+				"Corresponding index of this variable on the given Toggle Controller, if any. Be sure to set your Point of Reference on the Socket Annotation to the GameObject with the Toggle Controller component."
+			)]
+			public int toggleIndex;
+		}
 
         /// <summary>
         /// Used for JSON deserialization.
@@ -97,7 +115,7 @@ namespace CollabXR.ModExtras.Measurement
             Debug.Log("Got result " + result);
 
             variables.Clear();
-            variables = new List<Variable>();
+            var newVariables = new List<Variable>();
             foreach (Variable variable in result.variables)
             {
                 Debug.Log("Created variable " + variable.name);
@@ -123,9 +141,10 @@ namespace CollabXR.ModExtras.Measurement
                 Variable newVar = variable;
                 newVar.colors = colors;
                 newVar.colorsHex = null;
-                variables.Add(newVar);
+                newVariables.Add(newVar);
             }
 
+            variables = newVariables;
             Debug.Log(string.Format("Created {0} variables", variables.Count));
         }
     }
