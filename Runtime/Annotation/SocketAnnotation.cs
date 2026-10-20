@@ -22,13 +22,13 @@ namespace CollabXR.ModExtras.Annotation
 		FloatStream = 1,
 
 		/// <summary>
-		/// Outputs a static Texture2D. Can be animated.
+		/// Outputs a Texture. This property can be animated on the SocketAnnotation.
 		/// </summary>
-		StaticImage = 2,
+		Texture = 2,
 
 		/// <summary>
 		/// Used for volumetric data visualization, like volume slicing.
-		/// Outputs a static Texture3D, along with a Point of Reference transform used to determine orientation/scale. Can be animated.
+		/// Outputs a Texture3D, along with a Point of Reference transform used to determine orientation/scale. Can be animated.
 		/// </summary>
 		Volumetric = 3,
 	}
@@ -49,52 +49,34 @@ namespace CollabXR.ModExtras.Annotation
 
 		// We use a private field + a setter and getter so we can bind to change events
 		[CreateProperty]
-		[Tooltip("Texture to use for displaying static images. This can be animated.")]
-		public Texture2D imageTexture {
-			get { return f_imageTexture; }
-			set { f_imageTexture = value; c_imageTexture.Invoke(value); }
+		[Tooltip("Texture to use for 2D or 3D display. This can be animated by changing the reference.")]
+		public Texture texture {
+			get { return f_texture; }
+			set { f_texture = value; c_texture.Invoke(value); }
 		}
 		[SerializeField, DontCreateProperty]
-		private Texture2D f_imageTexture;
+		private Texture f_texture;
 		/// <summary>
-		/// Change event for image textures.
+		/// Change event for texture.
 		/// </summary>
 		[HideInInspector]
-		public UnityEvent<Texture2D> c_imageTexture;
+		public UnityEvent<Texture> c_texture;
 
-		[CreateProperty]
-		[Tooltip("Texture to use for Volume Slicing. This can be animated.")]
-		public Texture3D volumeTexture {
-			get { return f_volumeTexture; }
-			set { f_volumeTexture = value; c_volumeTexture.Invoke(value); }
-		}
-		[SerializeField, DontCreateProperty]
-		private Texture3D f_volumeTexture;
-		/// <summary>
-		/// Change event for volume textures.
-		/// </summary>
-		[HideInInspector]
-		public UnityEvent<Texture3D> c_volumeTexture;
 		[Tooltip("Point of reference Transform for volume slicing or other things.")]
 		public Transform pointOfReference;
 
 		// Set up event emitters
 		private void Awake()
 		{
-			if (c_imageTexture == null)
+			if (c_texture == null)
 			{
-				c_imageTexture = new UnityEvent<Texture2D>();
-			}
-			if (c_volumeTexture == null)
-			{
-				c_volumeTexture = new UnityEvent<Texture3D>();
+				c_texture = new UnityEvent<Texture>();
 			}
 		}
 
 		private void OnDestroy()
 		{
-			c_imageTexture.RemoveAllListeners();
-			c_volumeTexture.RemoveAllListeners();
+			c_texture.RemoveAllListeners();
 		}
 	}
 }

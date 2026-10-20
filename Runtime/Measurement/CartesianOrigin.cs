@@ -68,13 +68,16 @@ namespace CollabXR.ModExtras
             CartesianUtilities.EnsureGameObject(transform, axisLabelName, out axisObj, out axis);
 
             // Start setting up transform
-            axisObj.transform.SetLocalPositionAndRotation(settings.originOffset, Quaternion.identity);
+            axisObj.transform.SetLocalPositionAndRotation(
+                settings.originOffset,
+                Quaternion.identity
+            );
             axisObj.transform.localScale = Vector3.one;
 
             labelInfo.axisObject = axisObj;
 
             axis.material = settings.GetLineRenderMaterial();
-            axis.material.SetColor("_BaseColor", axisSettings.color);
+            axis.sharedMaterial.SetColor("_BaseColor", axisSettings.color);
             axis.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             axis.useWorldSpace = false;
             axis.startWidth = axisSettings.lineWidth;
@@ -212,19 +215,30 @@ namespace CollabXR.ModExtras
                     return;
                 }
                 float minScale = Mathf.Min(lossyScale.x, lossyScale.y, lossyScale.z);
-                label.label.transform.parent.localScale = CartesianUtilities.InverseVector3(lossyScale) * minScale;
+                label.label.transform.parent.localScale =
+                    CartesianUtilities.InverseVector3(lossyScale) * minScale;
 
                 // Dynamically pick label offset from actual axis drawing based on camera orientation
-                Vector3 offset = Vector3.Cross(
-                    label.label.transform.parent.worldToLocalMatrix.MultiplyVector(Camera.main.transform.forward),
-                    label.axis
-                ).normalized * (label.settings.lineWidth + label.settings.labelScale * 2.0f);
+                Vector3 offset =
+                    Vector3
+                        .Cross(
+                            label.label.transform.parent.worldToLocalMatrix.MultiplyVector(
+                                Camera.main.transform.forward
+                            ),
+                            label.axis
+                        )
+                        .normalized * (label.settings.lineWidth + label.settings.labelScale * 2.0f);
 
                 // Place label at center of axis
-                label.label.transform.localPosition = offset + Vector3.Scale(label.axis, lossyScale / minScale) * (label.length * 0.8f);
+                label.label.transform.localPosition =
+                    offset
+                    + Vector3.Scale(label.axis, lossyScale / minScale) * (label.length * 0.8f);
 
                 // Make sure label always faces the camera
-                label.label.transform.LookAt(Camera.main.transform.position, Camera.main.transform.up);
+                label.label.transform.LookAt(
+                    Camera.main.transform.position,
+                    Camera.main.transform.up
+                );
                 // Text renders forward-facing, so we need to rotate it 180 degrees on yaw axis so it's not horizontally mirrored
                 label.label.transform.localRotation *= Quaternion.AngleAxis(180.0f, Vector3.up);
             }
