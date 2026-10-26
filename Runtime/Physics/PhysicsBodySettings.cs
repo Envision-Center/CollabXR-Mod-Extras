@@ -46,6 +46,36 @@ namespace CollabXR
 	}
 
 	/// <summary>
+	/// Tuning for how an object bounces and slides off surfaces.
+	/// </summary>
+	[Serializable]
+	public class BounceTuning
+	{
+		[SerializeField]
+		[Tooltip("If true, replaces the Physics Material on all of this object's colliders with one auto-built from the values below.")]
+		private bool overrideMaterial;
+
+		[SerializeField]
+		[Range(0f, 1f)]
+		[Tooltip("How much speed is kept when bouncing, where 0 doesn't bounce and 1 bounces back at full speed.")]
+		private float bounciness = 0.6f;
+
+		[SerializeField]
+		[Min(0f)]
+		[Tooltip("The object's friction; higher values slow sliding.")]
+		private float friction = 0.6f;
+
+		[SerializeField]
+		[Tooltip("Keep this object's bounciness on surfaces that are less bouncy than it. When off, bounciness is averaged with the surface's.")]
+		private bool ignoreSurfaceBounce = true;
+
+		public bool OverrideMaterial => overrideMaterial;
+		public float Bounciness => bounciness;
+		public float Friction => friction;
+		public bool IgnoreSurfaceBounce => ignoreSurfaceBounce;
+	}
+
+	/// <summary>
 	/// Optional physics settings for an object with a Rigidbody on its root.
 	/// </summary>
 	[DisallowMultipleComponent]
@@ -64,8 +94,12 @@ namespace CollabXR
 		[SerializeField]
 		private ThrowTuning throwing = new();
 
+		[SerializeField]
+		private BounceTuning bounce = new();
+
 		public PhysicsScaleMode ScaleMode => scaleMode;
 		public float GravityScale => gravityScale;
 		public ThrowTuning Throwing => throwing;
+		public BounceTuning Bounce => bounce;
 	}
 }
