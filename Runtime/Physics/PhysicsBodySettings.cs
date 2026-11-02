@@ -35,13 +35,19 @@ namespace CollabXR
 		private float maxSpeed = 15f;
 
 		[SerializeField]
+		[Min(0f)]
+		[Tooltip("Fastest this object can ever spin, in radians per second. For a rolling object, set this to at least (speed / radius).")]
+		private float maxSpin = 50f;
+
+		[SerializeField]
 		[Range(0.02f, 0.5f)]
-		[Tooltip("How many seconds of recent hand motion the throw is based on. Shorter is snappier, longer is smoother.")]
+		[Tooltip("How many seconds of recent hand motion the throw is based on, where a shorter window is snappier and longer is smoother.")]
 		private float sampleWindow = 0.1f;
 
 		public float Strength => strength;
 		public float Spin => spin;
 		public float MaxSpeed => maxSpeed;
+		public float MaxSpin => maxSpin;
 		public float SampleWindow => sampleWindow;
 	}
 
@@ -82,11 +88,6 @@ namespace CollabXR
 	[RequireComponent(typeof(Rigidbody))]
 	public class PhysicsBodySettings : MonoBehaviour
 	{
-		/// <summary>
-		/// The spin limit for physics objects, in radians per second, when no settings override it.
-		/// </summary>
-		public const float DefaultMaxAngularVelocity = 50f;
-
 		[SerializeField]
 		[Tooltip("How mass changes when a player resizes this object.")]
 		private PhysicsScaleMode scaleMode = PhysicsScaleMode.ScaleMassWithVolume;
@@ -97,11 +98,6 @@ namespace CollabXR
 		private float gravityScale = 1f;
 
 		[SerializeField]
-		[Min(0f)]
-		[Tooltip("Fastest this object can spin, in radians per second. For a rolling object, set this to at least (speed / radius).")]
-		private float maxAngularVelocity = DefaultMaxAngularVelocity;
-
-		[SerializeField]
 		private ThrowTuning throwing = new();
 
 		[SerializeField]
@@ -109,7 +105,6 @@ namespace CollabXR
 
 		public PhysicsScaleMode ScaleMode => scaleMode;
 		public float GravityScale => gravityScale;
-		public float MaxAngularVelocity => maxAngularVelocity;
 		public ThrowTuning Throwing => throwing;
 		public BounceTuning Bounce => bounce;
 	}
