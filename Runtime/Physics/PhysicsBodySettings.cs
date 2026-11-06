@@ -21,7 +21,7 @@ namespace CollabXR
 	{
 		[SerializeField]
 		[Min(0f)]
-		[Tooltip("Multiplier on the hand's speed when released. Above 1 makes the object fly further.")]
+		[Tooltip("Multiplier on the hand's speed when released.")]
 		private float strength = 1f;
 
 		[SerializeField]
