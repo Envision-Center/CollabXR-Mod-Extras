@@ -31,6 +31,11 @@ namespace CollabXR.ModExtras.Annotation
 		/// Outputs a Texture3D, along with a Point of Reference transform used to determine orientation/scale. Can be animated.
 		/// </summary>
 		Volumetric = 3,
+
+		/// <summary>
+		/// Fires a plain event with no parameters.
+		/// </summary>
+		Event = 4,
 	}
 
 	[CreateAssetMenu(fileName = "SocketAnnotation", menuName = "CollabXR/Sockets/Annotation")]
@@ -65,6 +70,12 @@ namespace CollabXR.ModExtras.Annotation
 		[Tooltip("Point of reference Transform for volume slicing or other things.")]
 		public Transform pointOfReference;
 
+		/// <summary>
+		/// Generic event with no parameters that can be fired.
+		/// </summary>
+		[HideInInspector]
+		public UnityEvent c_plainEvent;
+
 		// Set up event emitters
 		private void Awake()
 		{
@@ -72,11 +83,25 @@ namespace CollabXR.ModExtras.Annotation
 			{
 				c_texture = new UnityEvent<Texture>();
 			}
+			if (c_plainEvent == null)
+			{
+				c_plainEvent = new UnityEvent();
+			}
 		}
 
 		private void OnDestroy()
 		{
 			c_texture.RemoveAllListeners();
+			c_plainEvent.RemoveAllListeners();
+		}
+
+		/// <summary>
+		/// Fires the plain event with no parameters.
+		/// Allows users to manually trigger it with UnityEvents or animations.
+		/// </summary>
+		public void FirePlainEvent()
+		{
+			c_plainEvent.Invoke();
 		}
 	}
 }
