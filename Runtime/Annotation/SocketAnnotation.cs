@@ -40,12 +40,11 @@ namespace CollabXR.ModExtras.Annotation
 
 	[CreateAssetMenu(fileName = "SocketAnnotation", menuName = "CollabXR/Sockets/Annotation")]
 	public class SocketAnnotation : MonoBehaviour
-    {
+	{
 		[Tooltip("Determines how the socket behaves.")]
 		public SocketBehavior behavior;
 
 		[Header("Behavior Data")]
-
 		[Tooltip("Metadata to pass to the Socket constructor. The type of data passed determines what socket is constructed.")]
 		public ScriptableObject scriptableObject;
 
@@ -55,12 +54,19 @@ namespace CollabXR.ModExtras.Annotation
 		// We use a private field + a setter and getter so we can bind to change events
 		[CreateProperty]
 		[Tooltip("Texture to use for 2D or 3D display. This can be animated by changing the reference.")]
-		public Texture texture {
-			get { return f_texture; }
-			set { f_texture = value; c_texture.Invoke(value); }
+		public Texture texture
+		{
+			get { return textureValue; }
+			set
+			{
+				textureValue = value;
+				c_texture.Invoke(value);
+			}
 		}
+
 		[SerializeField, DontCreateProperty]
-		private Texture f_texture;
+		private Texture textureValue;
+
 		/// <summary>
 		/// Change event for texture.
 		/// </summary>
