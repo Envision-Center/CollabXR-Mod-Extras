@@ -61,7 +61,7 @@ namespace CollabXR.ModExtras.Annotation
 		public ScriptableObject scriptableObject = null;
 
         [SerializeField, Tooltip("Default texture to output over the socket.")]
-        private Texture textureValue = null;
+        public Texture textureValue = null;
 
         [Tooltip("Default string value to output over the socket.")]
         public string stringValue = "";
